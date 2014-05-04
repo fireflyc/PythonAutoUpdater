@@ -33,14 +33,3 @@ class TestUpdater(unittest.TestCase):
         cur_dir = os.path.dirname(os.path.abspath(__file__))
         print cur_dir
         self.updater.update(cur_dir, self.next_file, self.download_progress)
-
-
-class TestUI(unittest.TestCase):
-    def test_tk(self):
-        cur_dir = os.path.dirname(os.path.abspath(__file__))
-        self.tk = TkUI(cur_dir, "http://localhost/check.php")
-        self.tk.show()
-
-cur_dir = os.path.dirname(os.path.abspath(__file__))
-tk = TkUI(cur_dir, "http://localhost/check.php")
-tk.show()

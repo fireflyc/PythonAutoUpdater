@@ -27,18 +27,25 @@ class Updater:
             self.remote_file_list.append(RemoteFile(remote_file))
         return self.remote_file_list
 
-    def update(self, download_path, next_file_progress, notify_progress, chunk_size=1024*1024):
+    def update(self, download_path, next_file_progress, notify_progress, chunk_size=1024 * 1024):
+        download_files = []
         for remote_file in self.remote_file_list:
             next_file_progress(remote_file)
             remote_file.download(download_path, notify_progress, chunk_size)
+            download_files.append(os.path.join(download_path, remote_file.name()))
+        return download_files
 
 
 class RemoteFile:
     def __init__(self, url):
         self.url = url
+        self.download_file = self.url.split("/")[-1]
 
     def path(self):
         return self.url
+
+    def name(self):
+        return self.download_file
 
     def __str__(self):
         return self.path()
@@ -54,8 +61,7 @@ class RemoteFile:
         total_size = int(total_size)
         read_size = 0
 
-        download_file = self.url.split("/")[-1]
-        download_file = open(os.path.join(download_path, download_file), "wb")
+        download_file = open(os.path.join(download_path, self.download_file), "wb")
         try:
             chunk = True
             while chunk:
